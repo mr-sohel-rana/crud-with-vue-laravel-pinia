@@ -1,3 +1,3 @@
 <template>
-    hello
+     this is home page
 </template>
