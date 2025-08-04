@@ -47,23 +47,18 @@
       </button>
     </form>
 
-    <!-- Show the posts -->
-    <div class="mt-8">
-      <h3 class="text-xl font-semibold mb-2">All Students</h3>
-      <ul v-if="posts.length">
-        <li v-for="(post, index) in posts" :key="post.id" class="border-b py-2">
-          <strong>{{ post.name }}</strong> - {{ post.department }} (Roll: {{ post.roll }})
-        </li>
-      </ul>
-      <p v-else>No students found.</p>
-    </div>
+    
   </div>
 </template>
 
-<script setup>
+ <script setup>
 import { reactive, onMounted } from 'vue';
 import { useCrudStore } from '../js/store/CrudStore';
+import { useRoute, useRouter } from 'vue-router';
 
+
+
+const router = useRouter();
 const form = reactive({
   name: '',
   department: '',
@@ -71,19 +66,21 @@ const form = reactive({
 });
 
 const crudStore = useCrudStore();
-const { addItem, fetchItem, posts } = crudStore;
+const { addItem, fetchData, posts } = crudStore;
 
-// Fetch existing posts on page load
 onMounted(() => {
-  fetchItem();
+  fetchData();
 });
 
-function handleSubmit() {
+async function handleSubmit() {
   if (form.name && form.department && form.roll) {
-    addItem({ ...form });
-    form.name = '';
-    form.department = '';
-    form.roll = '';
+    await addItem({
+      name: form.name,
+      department: form.department,
+      roll: form.roll
+    });
+     router.push('/students');
   }
 }
 </script>
+
