@@ -19,7 +19,7 @@ class CrudController extends Controller
 
      }
 
-     function signleStudent(Request $request,$id){
+     function singleStudent(Request $request,$id){
         $student=Crud::find($id);
         if(!$student){
             return response()->json(['student not found']);

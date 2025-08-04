@@ -31,11 +31,12 @@
         <label for="roll" class="block mb-1 font-semibold">Roll</label>
         <input
           id="roll"
-          v-model="form.roll"
+          v-model.number="form.roll"
           type="number"
           placeholder="Enter your roll number"
           class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
           required
+          min="1"
         />
       </div>
 
@@ -46,41 +47,31 @@
         Submit
       </button>
     </form>
-
-    
   </div>
 </template>
 
- <script setup>
-import { reactive, onMounted } from 'vue';
-import { useCrudStore } from '../js/store/CrudStore';
-import { useRoute, useRouter } from 'vue-router';
-
-
+<script setup>
+import { reactive } from 'vue';
+import { useCrudStore } from '../components/composition/store/CrudStore';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const crudStore = useCrudStore();
+
 const form = reactive({
   name: '',
   department: '',
-  roll: ''
-});
-
-const crudStore = useCrudStore();
-const { addItem, fetchData, posts } = crudStore;
-
-onMounted(() => {
-  fetchData();
+  roll: null,
 });
 
 async function handleSubmit() {
-  if (form.name && form.department && form.roll) {
-    await addItem({
-      name: form.name,
-      department: form.department,
-      roll: form.roll
-    });
-     router.push('/students');
+  try {
+    await crudStore.addItem({ ...form });
+    alert('Student added successfully!');
+    router.push('/students');
+  } catch (error) {
+    console.error('Failed to add student:', error);
+    alert('Failed to add student, please try again.');
   }
 }
 </script>
-

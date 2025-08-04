@@ -31,7 +31,7 @@
         <label for="roll" class="block mb-1 font-semibold">Roll</label>
         <input
           id="roll"
-          v-model="form.roll"
+          v-model.number="form.roll"
           type="number"
           placeholder="Enter roll number"
           class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -52,27 +52,33 @@
 <script setup>
 import { reactive, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useCrudStore } from '../js/store/CrudStore';
+import { useCrudStore } from '../components/composition/store/CrudStore';
 
 const route = useRoute();
 const router = useRouter();
+const crudStore = useCrudStore();
+
 const id = route.params.id;
 
-const crudStore = useCrudStore();
 const form = reactive({
   name: '',
   department: '',
-  roll: ''
+  roll: null
 });
 
 const fetchStudent = async () => {
   try {
-    await crudStore.signleData(id);
+    await crudStore.singleData(id);
     const student = crudStore.student;
 
-    form.name = student.name;
-    form.department = student.department;
-    form.roll = student.roll;
+    if (student) {
+      form.name = student.name || '';
+      form.department = student.department || '';
+      form.roll = student.roll || null;
+    } else {
+      alert('Student not found!');
+      router.push('/students');
+    }
   } catch (error) {
     console.error('Failed to fetch student:', error);
   }
@@ -85,10 +91,9 @@ const handleSubmit = async () => {
     router.push('/students');
   } catch (error) {
     console.error('Failed to update student:', error);
+    alert('Update failed!');
   }
 };
 
-onMounted(() => {
-  fetchStudent();
-});
+onMounted(fetchStudent);
 </script>

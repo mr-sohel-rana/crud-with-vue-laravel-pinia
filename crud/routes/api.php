@@ -10,7 +10,7 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/home',[CrudController::class,'index']);
 Route::post('/add',[CrudController::class,'addStudent']);
-Route::get('/student/{id}',[CrudController::class,'signleStudent']);
+Route::get('/student/{id}',[CrudController::class,'singleStudent']);
 Route::put('/update/{id}',[CrudController::class,'update']);
 Route::delete('/delete/{id}',[CrudController::class,'deleteStu']);
 
