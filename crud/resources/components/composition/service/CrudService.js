@@ -1,4 +1,3 @@
- // src/components/composition/service/CrudService.js
 
 import axios from "axios";
 

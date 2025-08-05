@@ -5,6 +5,7 @@ export const useCrudStore = defineStore('crud', {
   state: () => ({
     posts: [],
     student: null,
+
   }),
 
   actions: {

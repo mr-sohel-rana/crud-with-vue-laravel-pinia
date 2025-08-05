@@ -1,7 +1,7 @@
  <template>
   <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
     <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
-      Here all student data show
+        All student 
     </h1>
 
     <ul v-if="posts.length" class="space-y-4">
@@ -34,6 +34,7 @@
       No student data available.
     </p>
   </div>
+
 </template>
 
 <script setup>
